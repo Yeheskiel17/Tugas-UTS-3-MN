@@ -1,0 +1,35 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameter persamaan
+def resistance(T):
+    return 5000 * np.exp(3500 * ((1 / T) - (1 / 298)))
+
+# (a) Turunan numerik
+def forward_difference(f, x, h):
+    return (f(x + h) - f(x)) / h
+
+def backward_difference(f, x, h):
+    return (f(x) - f(x - h)) / h
+
+def central_difference(f, x, h):
+    return (f(x + h) - f(x - h)) / (2 * h)
+
+# Range suhu
+T_values = np.arange(250, 351, 10)
+h = 1e-2  # Langkah kecil untuk menghitung turunan
+
+# Menghitung turunan pada setiap metode
+forward_diffs = [forward_difference(resistance, T, h) for T in T_values]
+backward_diffs = [backward_difference(resistance, T, h) for T in T_values]
+central_diffs = [central_difference(resistance, T, h) for T in T_values]
+
+# Plot hasil
+plt.plot(T_values, forward_diffs, label="Forward Difference")
+plt.plot(T_values, backward_diffs, label="Backward Difference")
+plt.plot(T_values, central_diffs, label="Central Difference")
+plt.xlabel("Temperature (K)")
+plt.ylabel("dR/dT")
+plt.title("Turunan R terhadap T dengan Metode Numerik")
+plt.legend()
+plt.show()
